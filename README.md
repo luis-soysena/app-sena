@@ -1,4 +1,4 @@
-# APP Suscripciones
+# App Suscripciones
 
 ### Requisitos
 - Instalar Node.JS versión 16+
@@ -6,15 +6,15 @@
 
 ### Proceso de instalación de ambiente local
 
-Para instalar localmente esta APP se necesita primero que nada tener instaladas las herramientas indicadas en requisitos.
+Para instalar localmente esta App se necesita primero que nada tener instaladas las herramientas indicadas en requisitos.
 
 Luego procedemos con:
 
-- Abril la terminal e ir a la carpeta donde queremos clonar el repositorio.
+- Abrir la terminal e ir a la carpeta donde queremos clonar el repositorio.
 
 - Clonar este repositorio ```git clone https://github.com/luis-soysena/app-sena.git```
 
-- Ingresar a la carpeta api-sena ```cd app-sena```
+- Ingresar a la carpeta app-sena ```cd app-sena```
 
 - Crear el archivo ```.env``` con la siguiente información:
 
@@ -25,8 +25,8 @@ Luego procedemos con:
   VITE_API_URL = "http://localhost:5007/api/v1/"
   ```
 
-  Para la API KEY esta debe coincidir con la que se configure en la app front.
+  Para la API KEY esta debe coincidir con la que se configure en la API.
 
 - Ejecutar ```npm install``` y espere a que se instalen los paquetes.
 
-- Ejecutar ```npm start``` y visitar la URL indicada en la salida de la consola.
+- Ejecutar ```npm run dev``` y visitar la URL indicada en la terminal.
