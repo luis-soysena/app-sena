@@ -4,8 +4,9 @@ import { setCookie } from "../utils/cookies";
 import { Navigate } from "react-router-dom";
 
 const LoginView = () => {
+  const { VITE_COOKIE_NAME: cookieName } = import.meta.env;
   const [email, setEmail] = useState("de@mo.co");
-  const [password, setPassword] = useState("1234");
+  const [password, setPassword] = useState("demo");
   const [loginError, setLoginError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [userLogged, setUserLogged] = useState(false);
@@ -25,7 +26,7 @@ const LoginView = () => {
         return;
       }
 
-      setCookie("appSena", "true");
+      setCookie(cookieName, JSON.stringify(response?.data?.user), {secure: true, 'max-age': 7200});
       setUserLogged(true);
     } else {
       setLoginError(true);
@@ -57,6 +58,7 @@ const LoginView = () => {
                     className="form-control form-control-lg"
                     placeholder="Email"
                     onKeyDown={(event) => setEmail(event.target.value)}
+                    defaultValue={email}
                   />
                 </div>
 
@@ -67,6 +69,7 @@ const LoginView = () => {
                     className="form-control form-control-lg"
                     placeholder="Contraseña"
                     onKeyDown={(event) => setPassword(event.target.value)}
+                    defaultValue={password}
                   />
                 </div>
 

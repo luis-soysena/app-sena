@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 // Views
 import PrivateRoute from "./views/private";
 import LoginView from "./views/login";
+import DashboardView from "./views/admin/views/dashboard";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <PrivateRoute view={<p>Admin</p>} />,
+    element: <PrivateRoute view={<DashboardView />} />,
   },
 ]);
 
