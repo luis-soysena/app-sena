@@ -1,3 +1,4 @@
+import AdminFooter from "./common/footer";
 import AdminHeader from "./common/header";
 
 const AdminLayout = ({ children }) => {
@@ -5,6 +6,7 @@ const AdminLayout = ({ children }) => {
     <>
       <AdminHeader />
       { children }
+      <AdminFooter />
     </>
   )
 }
