@@ -5,7 +5,20 @@ const { VITE_API_URL, VITE_API_KEY, VITE_PASSWD_HASH } = import.meta.env;
 
 /* SUBSCRIPTIONS */
 
-export const getSubscription = async (email) => {};
+export const getSubscription = async (email) => {
+  try {
+    return await axios.get(
+      `${VITE_API_URL}/subscription/search?email=${email}`,
+      {
+        headers: {
+          "x-api-key": VITE_API_KEY,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
 
 /* USERS */
 
