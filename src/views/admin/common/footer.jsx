@@ -8,6 +8,8 @@ const AdminFooter = () => {
         <p className="m-0">
           <small>
             { VITE_APP_NAME } &bull; Versión {VITE_APP_VERSION}
+            <br />
+            by Lucho Web
           </small>
         </p>
       </footer>

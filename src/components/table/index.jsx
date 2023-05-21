@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
+import { formatCurrency } from "../../utils/format";
 
 const Table = ({ userInfo, data }) => {
   const subscriptions = data?.data?.data.email
@@ -33,23 +34,27 @@ const Table = ({ userInfo, data }) => {
         <thead>
           <tr className="bg-dark text-light text-center">
             <th scope="col">
-              <i className="bi bi-envelope m-2"></i>
+              <i className="bi bi-envelope"></i>
               <small className="d-block">Email</small>
             </th>
             <th scope="col">
-              <i className="bi bi-patch-check m-2"></i>
+              <i className="bi bi-patch-check"></i>
               <small className="d-block">Estado</small>
             </th>
             <th scope="col">
-              <i className="bi bi-calendar2-check m-2"></i>
+              <i className="bi bi-calendar2-check"></i>
               <small className="d-block">Desde</small>
             </th>
             <th scope="col">
-              <i className="bi bi-calendar2-x m-2"></i>
+              <i className="bi bi-calendar2-x"></i>
               <small className="d-block">Hasta</small>
             </th>
             <th scope="col">
-              <i className="bi bi-gear m-2"></i>
+              <i className="bi bi-coin"></i>
+              <small className="d-block">Precio</small>
+            </th>
+            <th scope="col">
+              <i className="bi bi-gear"></i>
               <small className="d-block">Opciones</small>
             </th>
           </tr>
@@ -74,6 +79,7 @@ const Table = ({ userInfo, data }) => {
                 <td>
                   {new Date(subscription?.end_date).toLocaleDateString("es-CO")}
                 </td>
+                <td scope="row">{formatCurrency(subscription?.price, "COP")}</td>
                 <td>
                   <Link
                     to={`/admin/subscription/edit/${subscription?.email}`}

@@ -22,8 +22,49 @@ export const getSubscription = async (email) => {
 
 export const getAllSubscriptions = async (email) => {
   try {
-    return await axios.get(
-      `${VITE_API_URL}/subscription`,
+    return await axios.get(`${VITE_API_URL}/subscription`, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateSubscription = async ({
+  email,
+  start_date,
+  end_date,
+  status,
+  price,
+}) => {
+  try {
+    return await axios.put(
+      `${VITE_API_URL}/subscription/update`,
+      {
+        email,
+        start_date,
+        end_date,
+        status,
+        price,
+      },
+      {
+        headers: {
+          "x-api-key": VITE_API_KEY,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteSubscription = async (email) => {
+  try {
+    return await axios.delete(
+      `${VITE_API_URL}/subscription/update`,
+      { email },
       {
         headers: {
           "x-api-key": VITE_API_KEY,
@@ -52,5 +93,3 @@ export const getAccess = async ({ email, password }) => {
     return error;
   }
 };
-
-export const getUser = async (email) => {};

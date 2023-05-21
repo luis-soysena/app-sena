@@ -5,11 +5,12 @@ const Search = ({ getData }) => {
 
   return (
     <div className="search mb-4">
+      <h4>Buscar suscripción</h4>
       <div className="row">
         <div className="col-9 col-lg-10">
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Ingrese e-mail"
             className="form-control"
             onChange={(event) => setEmail(event.target.value)}
           />
