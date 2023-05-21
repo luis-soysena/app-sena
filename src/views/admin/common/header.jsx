@@ -28,7 +28,7 @@ const AdminHeader = () => {
           <div className="col-6 d-flex justify-content-end">
             <button className="btn btn-danger" onClick={() => signOut()}>
               <span>Salir</span>
-              <i className="bi bi-box-arrow-right ms-1"></i>
+              <i className="bi bi-box-arrow-right ms-2"></i>
             </button>
           </div>
         </div>

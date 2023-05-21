@@ -29,7 +29,7 @@ const Table = ({ userInfo, data }) => {
     <p className="m-0">Cargando información...</p>
   ) : (
     <div className="table-responsive">
-      <table className="table table-bordered">
+      <table className="table table-bordered table-hover">
         <thead>
           <tr className="bg-dark text-light text-center">
             <th scope="col">
@@ -77,7 +77,7 @@ const Table = ({ userInfo, data }) => {
                 <td>
                   <Link
                     to={`/admin/subscription/edit/${subscription?.email}`}
-                    className="text-primary"
+                    className="btn btn-sm btn-primary"
                     title="Editar"
                   >
                     <i className="bi bi-pencil-fill"></i>
@@ -85,7 +85,7 @@ const Table = ({ userInfo, data }) => {
                   {userInfo?.role === 0 && (
                     <Link
                       to={`/admin/subscription/delete/${subscription?.email}`}
-                      className="ms-3 text-danger"
+                      className="ms-2 btn btn-sm btn-danger"
                       title="Eliminar"
                     >
                       <i className="bi bi-trash"></i>

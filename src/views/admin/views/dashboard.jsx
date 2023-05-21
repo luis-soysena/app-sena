@@ -14,7 +14,7 @@ const DashboardView = () => {
   const [apiData, setApiData] = useState([]);
 
   const getSubscriptionFromApi = async (email) => {
-    const response = await getSubscription(email);
+    const response = email ? await getSubscription(email) : await getAllSubscriptions();
     setApiData(response);
   };
 
@@ -31,7 +31,7 @@ const DashboardView = () => {
 
     // User
     if (!apiData.length && userInfo?.role > 0) {
-      getSubscriptionFromApi(userInfo?.email);
+      userInfo?.email && getSubscriptionFromApi(userInfo?.email);
     }
   }, []);
 
