@@ -1,6 +1,8 @@
 const Search = ({ getData }) => {
   return (
-    // ToDo
+    <div className="search">
+      Buscar
+    </div>
   );
 };
 

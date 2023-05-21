@@ -1,0 +1,13 @@
+.table {
+  tbody {
+    tr {
+      &.bg-inactive {
+        background-color: #fef0f0;
+      }
+
+      &.bg-active {
+        background-color: #f3fff6;
+      }
+    }
+  }
+}

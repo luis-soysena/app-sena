@@ -20,6 +20,21 @@ export const getSubscription = async (email) => {
   }
 };
 
+export const getAllSubscriptions = async (email) => {
+  try {
+    return await axios.get(
+      `${VITE_API_URL}/subscription`,
+      {
+        headers: {
+          "x-api-key": VITE_API_KEY,
+        },
+      }
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
 /* USERS */
 
 export const getAccess = async ({ email, password }) => {
@@ -37,4 +52,5 @@ export const getAccess = async ({ email, password }) => {
     return error;
   }
 };
+
 export const getUser = async (email) => {};

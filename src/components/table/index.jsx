@@ -1,43 +1,108 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
 
-const Table = ({ role, data }) => {
-  return (
+const Table = ({ userInfo, data }) => {
+  const subscriptions = data?.data?.data.email
+    ? [data?.data?.data]
+    : data?.data?.data;
+
+  const status = [
+    {
+      label: "Inactiva",
+      className: "bg-inactive",
+    },
+    {
+      label: "Activa",
+      className: "bg-active",
+    },
+  ];
+
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (subscriptions?.length) setLoading(false);
+  }, [subscriptions]);
+
+  return isLoading ? (
+    <p className="m-0">Cargando información...</p>
+  ) : (
     <div className="table-responsive">
-      <table className="table table-hover">
+      <table className="table table-bordered">
         <thead>
-          <tr>
-            <th scope="col">Email</th>
-            <th scope="col">Nombre</th>
-            <th scope="col" className="text-center">Suscripción</th>
-            <th scope="col" className="text-center">Inicio</th>
-            <th scope="col" className="text-center">Vence</th>
-            {role === 0 && (
-              <th scope="col" className="text-end">
-                Opciones
-              </th>
-            )}
+          <tr className="bg-dark text-light text-center">
+            <th scope="col">
+              <i className="bi bi-envelope m-2"></i>
+              <small className="d-block">Email</small>
+            </th>
+            <th scope="col">
+              <i className="bi bi-patch-check m-2"></i>
+              <small className="d-block">Estado</small>
+            </th>
+            <th scope="col">
+              <i className="bi bi-calendar2-check m-2"></i>
+              <small className="d-block">Desde</small>
+            </th>
+            <th scope="col">
+              <i className="bi bi-calendar2-x m-2"></i>
+              <small className="d-block">Hasta</small>
+            </th>
+            <th scope="col">
+              <i className="bi bi-gear m-2"></i>
+              <small className="d-block">Opciones</small>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td scope="row">luchowebcom@gmail.com</td>
-            <td>Luis Rodriguez</td>
-            <td className="text-center">Activa</td>
-            <td className="text-center">01-02-2023</td>
-            <td className="text-center">01-08-2023</td>
-            {role === 0 && (
-              <td className="text-end">
-                <Link className="text-primary me-3" title="Editar">
-                  <i className="bi bi-pencil"></i>
-                </Link>
-                <Link className="text-danger" title="Eliminar">
-                  <i className="bi bi-trash"></i>
-                </Link>
+          {data?.data?.data ? (
+            subscriptions.map((subscription, index) => (
+              <tr
+                key={`sub-${index}`}
+                className={`
+                  text-center
+                  ${status[subscription?.status].className}
+                `}
+              >
+                <td scope="row">{subscription?.email}</td>
+                <td>{status[subscription?.status].label}</td>
+                <td>
+                  {new Date(subscription?.start_date).toLocaleDateString(
+                    "es-CO"
+                  )}
+                </td>
+                <td>
+                  {new Date(subscription?.end_date).toLocaleDateString("es-CO")}
+                </td>
+                <td>
+                  <Link
+                    to={`/admin/subscription/edit/${subscription?.email}`}
+                    className="text-primary"
+                    title="Editar"
+                  >
+                    <i className="bi bi-pencil-fill"></i>
+                  </Link>
+                  {userInfo?.role === 0 && (
+                    <Link
+                      to={`/admin/subscription/delete/${subscription?.email}`}
+                      className="ms-3 text-danger"
+                      title="Eliminar"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Link>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={userInfo?.role === 0 ? 6 : 5}>
+                <p className="alert alert-warning m-0">
+                  No hay subscripciones registradas en la base de datos.
+                </p>
               </td>
-            )}
-          </tr>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

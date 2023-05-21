@@ -5,8 +5,8 @@ import { Navigate } from "react-router-dom";
 
 const LoginView = () => {
   const { VITE_COOKIE_NAME: cookieName } = import.meta.env;
-  const [email, setEmail] = useState("de@mo.co");
-  const [password, setPassword] = useState("demo");
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [loginError, setLoginError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [userLogged, setUserLogged] = useState(false);
@@ -54,22 +54,20 @@ const LoginView = () => {
                 <div className="form-outline mb-4">
                   <input
                     type="email"
-                    id="typeEmailX-2"
                     className="form-control form-control-lg"
                     placeholder="Email"
-                    onKeyDown={(event) => setEmail(event.target.value)}
-                    defaultValue={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="off"
                   />
                 </div>
 
                 <div className="form-outline mb-4">
                   <input
                     type="password"
-                    id="typePasswordX-2"
                     className="form-control form-control-lg"
                     placeholder="Contraseña"
-                    onKeyDown={(event) => setPassword(event.target.value)}
-                    defaultValue={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    autoComplete="off"
                   />
                 </div>
 
