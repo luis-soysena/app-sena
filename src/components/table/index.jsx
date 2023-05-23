@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
-import { formatCurrency } from "../../utils/format";
+import { formatCurrency, formatDateToTime } from "../../utils/format";
 
-const Table = ({ userInfo, data }) => {
+const Table = ({ userInfo, data, setShowModal }) => {
   const subscriptions = data?.data?.data.email
     ? [data?.data?.data]
     : data?.data?.data;
@@ -53,10 +53,12 @@ const Table = ({ userInfo, data }) => {
               <i className="bi bi-coin"></i>
               <small className="d-block">Precio</small>
             </th>
-            <th scope="col">
-              <i className="bi bi-gear"></i>
-              <small className="d-block">Opciones</small>
-            </th>
+            {userInfo?.role === 0 && (
+              <th scope="col">
+                <i className="bi bi-gear"></i>
+                <small className="d-block">Opciones</small>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -66,11 +68,21 @@ const Table = ({ userInfo, data }) => {
                 key={`sub-${index}`}
                 className={`
                   text-center
-                  ${status[subscription?.status].className}
+                  ${
+                    formatDateToTime(subscription?.end_date) >
+                    new Date().getTime()
+                      ? "bg-active"
+                      : "bg-inactive"
+                  }
                 `}
               >
                 <td scope="row">{subscription?.email}</td>
-                <td>{status[subscription?.status].label}</td>
+                <td>
+                  {formatDateToTime(subscription?.end_date) >
+                  new Date().getTime()
+                    ? "Activa"
+                    : "Inactiva"}
+                </td>
                 <td>
                   {new Date(subscription?.start_date).toLocaleDateString(
                     "es-CO"
@@ -79,25 +91,32 @@ const Table = ({ userInfo, data }) => {
                 <td>
                   {new Date(subscription?.end_date).toLocaleDateString("es-CO")}
                 </td>
-                <td scope="row">{formatCurrency(subscription?.price, "COP")}</td>
-                <td>
-                  <Link
-                    to={`/admin/subscription/edit/${subscription?.email}`}
-                    className="btn btn-sm btn-primary"
-                    title="Editar"
-                  >
-                    <i className="bi bi-pencil-fill"></i>
-                  </Link>
-                  {userInfo?.role === 0 && (
+                <td scope="row">
+                  {formatCurrency(subscription?.price, "COP")}
+                </td>
+                {userInfo?.role === 0 && (
+                  <td>
                     <Link
-                      to={`/admin/subscription/delete/${subscription?.email}`}
+                      to={`/admin/subscription/edit/${subscription?.email}`}
+                      className="btn btn-sm btn-primary"
+                      title="Editar"
+                    >
+                      <i className="bi bi-pencil-fill"></i>
+                    </Link>
+                    <button
                       className="ms-2 btn btn-sm btn-danger"
                       title="Eliminar"
+                      onClick={() =>
+                        setShowModal({
+                          param: subscription?.email,
+                          show: true,
+                        })
+                      }
                     >
                       <i className="bi bi-trash"></i>
-                    </Link>
-                  )}
-                </td>
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (

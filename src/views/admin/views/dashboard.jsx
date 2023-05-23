@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import { Search, Table } from "../../../components";
+import { Modal, Search, Table } from "../../../components";
 import { getCookie } from "../../../utils/cookies";
 import AdminLayout from "../layout";
-import { getSubscription, getAllSubscriptions } from "../../../services/api";
+import {
+  getSubscription,
+  getAllSubscriptions,
+  deleteSubscription,
+} from "../../../services/api";
 
 const DashboardView = () => {
   const { VITE_COOKIE_NAME } = import.meta.env;
@@ -12,10 +16,30 @@ const DashboardView = () => {
     userInfo?.role === 0 ? "Suscripciones recientes" : "Mi suscripción";
 
   const [apiData, setApiData] = useState([]);
+  const [showModal, setShowModal] = useState({
+    param: null,
+    show: false,
+  });
 
   const getSubscriptionFromApi = async (email) => {
-    const response = email ? await getSubscription(email) : await getAllSubscriptions();
+    const response = email
+      ? await getSubscription(email)
+      : await getAllSubscriptions();
     setApiData(response);
+  };
+
+  const deleteSub = async (email) => {
+    const response = await deleteSubscription(email);
+
+    if (response?.data?.data) {
+      const subscriptions = await getAllSubscriptions();
+      setApiData(subscriptions);
+    }
+
+    setShowModal({
+      param: null,
+      show: false
+    })
   };
 
   useEffect(() => {
@@ -37,6 +61,10 @@ const DashboardView = () => {
 
   return (
     <AdminLayout>
+      {showModal.show && (
+        <Modal setShowModal={setShowModal} deleteSub={deleteSub} email={showModal.param} />
+      )}
+
       <section className="dashboard pt-4 pb-4">
         <div className="container">
           <div className="dashboard__title mb-4">
@@ -54,7 +82,11 @@ const DashboardView = () => {
 
           <h4 className="mb-3">{title}</h4>
 
-          <Table data={apiData} userInfo={userInfo} />
+          <Table
+            data={apiData}
+            userInfo={userInfo}
+            setShowModal={setShowModal}
+          />
         </div>
       </section>
     </AdminLayout>

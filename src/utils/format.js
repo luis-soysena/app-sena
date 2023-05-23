@@ -5,3 +5,5 @@ export const formatCurrency = (number, currency) =>
     currency,
     maximumFractionDigits: 0,
   }).format(number);
+
+export const formatDateToTime = (date) => new Date(date).getTime();

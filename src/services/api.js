@@ -63,7 +63,7 @@ export const updateSubscription = async ({
 export const deleteSubscription = async (email) => {
   try {
     return await axios.delete(
-      `${VITE_API_URL}/subscription/update`,
+      `${VITE_API_URL}/subscription/delete`,
       { email },
       {
         headers: {
