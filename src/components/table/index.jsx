@@ -1,34 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import "./styles.scss";
 import { formatCurrency, formatDateToTime } from "../../utils/format";
 
-const Table = ({ userInfo, data, setShowModal }) => {
-  const subscriptions = data?.data?.data.email
-    ? [data?.data?.data]
-    : data?.data?.data;
+import "./styles.scss";
 
-  const status = [
-    {
-      label: "Inactiva",
-      className: "bg-inactive",
-    },
-    {
-      label: "Activa",
-      className: "bg-active",
-    },
-  ];
+const Table = ({ userInfo, data, setShowModal }) => {
+  const subscriptions = data?.data?.data?.email
+    ? [data?.data?.data]
+    : (data?.data?.data || []);
 
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (subscriptions?.length) setLoading(false);
+    if (subscriptions) setLoading(false);
   }, [subscriptions]);
 
-  return isLoading ? (
-    <p className="m-0">Cargando información...</p>
-  ) : (
+  return (
     <div className="table-responsive">
       <table className="table table-bordered table-hover">
         <thead>
@@ -62,7 +49,15 @@ const Table = ({ userInfo, data, setShowModal }) => {
           </tr>
         </thead>
         <tbody>
-          {data?.data?.data ? (
+          {isLoading ? (
+            <tr>
+              <td colSpan={userInfo?.role === 0 ? 6 : 5}>
+                <p className="alert alert-warning m-0">
+                  Cargando datos...
+                </p>
+              </td>
+            </tr>
+          ) : subscriptions?.length ? (
             subscriptions.map((subscription, index) => (
               <tr
                 key={`sub-${index}`}

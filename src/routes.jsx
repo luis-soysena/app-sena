@@ -21,8 +21,8 @@ const router = createBrowserRouter([
     element: <PrivateRoute view={<NewSubscriptionView />} />,
   },
   {
-    path: "/admin/subscription/edit",
-    element: <PrivateRoute view={<NewSubscriptionView edit={true} />} />,
+    path: "/admin/subscription/edit/:email",
+    element: <PrivateRoute view={<NewSubscriptionView />} />,
   },
   {
     path: "*",
