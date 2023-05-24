@@ -30,7 +30,6 @@ const DashboardView = () => {
 
   const deleteSub = async (email) => {
     const response = await deleteSubscription(email);
-    console.log(response)
 
     if (response?.data?.code === 200) {
       const subscriptions = await getAllSubscriptions();

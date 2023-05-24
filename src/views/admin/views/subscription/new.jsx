@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AdminLayout from "../../layout";
 import SubscriptionForm from "../../../../components/subsForm";
+import { getSubscription } from "../../../../services/api";
 
 const NewSubscriptionView = () => {
   const { email } = useParams();
@@ -11,10 +12,17 @@ const NewSubscriptionView = () => {
   useEffect(() => {
     if (!email) {
       setSubscription([]);
-      setLoading(false);
     } else {
-      // get data
+      const getSubByEmail = async () => {
+        const response = await getSubscription(email);
+        console.log(response)
+        setSubscription(response);
+      };
+
+      getSubByEmail();
     }
+
+    return () => setLoading(false);
   }, []);
 
   return (
