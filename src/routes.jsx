@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import PrivateRoute from "./views/private";
 import LoginView from "./views/login";
 import DashboardView from "./views/admin/views/dashboard";
+import NotFoundView from "./views/404";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <PrivateRoute view={<DashboardView />} />,
+  },
+  {
+    path: "*",
+    element: <NotFoundView />,
   },
 ]);
 
