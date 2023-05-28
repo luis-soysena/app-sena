@@ -17,7 +17,6 @@ const LoginView = () => {
       setLoading(true);
 
       const response = await getAccess({ email, password });
-      console.log(response)
       const statusCode = response?.data?.code;
 
       if (statusCode !== 200) {

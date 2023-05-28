@@ -20,24 +20,21 @@ export const getSubscription = async (email) => {
   }
 };
 
-export const getUser = async (email) => {
+export const getAllSubscriptions = async (email) => {
   try {
-    return await axios.get(
-      `${VITE_API_URL}/user/search?email=${email}`,
-      {
-        headers: {
-          "x-api-key": VITE_API_KEY,
-        },
-      }
-    );
+    return await axios.get(`${VITE_API_URL}/subscription`, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+    });
   } catch (error) {
     return error;
   }
 };
 
-export const getAllSubscriptions = async (email) => {
+export const saveSubscription = async (body) => {
   try {
-    return await axios.get(`${VITE_API_URL}/subscription`, {
+    return await axios.post(`${VITE_API_URL}/subscription/save`, body, {
       headers: {
         "x-api-key": VITE_API_KEY,
       },
@@ -77,15 +74,12 @@ export const updateSubscription = async ({
 
 export const deleteSubscription = async (email) => {
   try {
-    return await axios.delete(
-      `${VITE_API_URL}/subscription/delete`,
-      {
-        headers: {
-          "x-api-key": VITE_API_KEY,
-        },
-        data: { email }
-      }
-    );
+    return await axios.delete(`${VITE_API_URL}/subscription/delete`, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+      data: { email },
+    });
   } catch (error) {
     return error;
   }
@@ -104,6 +98,43 @@ export const getAccess = async ({ email, password }) => {
         },
       }
     );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getUser = async (email) => {
+  try {
+    return await axios.get(`${VITE_API_URL}/user/search?email=${email}`, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const saveUser = async (body) => {
+  try {
+    return await axios.post(`${VITE_API_URL}/user/new`, body, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteUser = async (email) => {
+  try {
+    return await axios.delete(`${VITE_API_URL}/user/delete`, {
+      headers: {
+        "x-api-key": VITE_API_KEY,
+      },
+      data: { email },
+    });
   } catch (error) {
     return error;
   }

@@ -6,6 +6,7 @@ import {
   getSubscription,
   getAllSubscriptions,
   deleteSubscription,
+  deleteUser,
 } from "../../../services/api";
 
 const DashboardView = () => {
@@ -32,6 +33,7 @@ const DashboardView = () => {
     const response = await deleteSubscription(email);
 
     if (response?.data?.code === 200) {
+      await deleteUser(email);
       const subscriptions = await getAllSubscriptions();
       setApiData(subscriptions);
     }

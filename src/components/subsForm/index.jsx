@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getUser } from "../../services/api";
+import sha1 from "js-sha1";
 import { formatInputDate } from "../../utils/format";
+import { getUser, saveUser, saveSubscription, updateSubscription ,deleteSubscription } from "../../services/api";
 
 const SubscriptionForm = ({ data }) => {
+  const { VITE_PASSWD_HASH } = import.meta.env;
   const subscription = data?.data?.data;
-  const status = 0;
+
   const [userEmail, setEmail] = useState(subscription?.email);
   const [name, setName] = useState(null);
   const [password, setPassword] = useState(null);
@@ -18,13 +20,66 @@ const SubscriptionForm = ({ data }) => {
   );
   const [isEmptyField, setEmptyField] = useState(true);
   const [isLoading, setLoading] = useState(true);
+  const [errorOnSave, setErrorOnSave] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
-  const saveSub = () => {
-    // date.toISOString() to save a date on mongodb
+  const saveSub = async (action = "save") => {
+    if (!isEmptyField) {
+      switch (action) {
+        case "save":
+          const subsRes = await saveSubscription({
+            email: userEmail,
+            price,
+            start_date: new Date(startDate).toISOString(),
+            end_date: new Date(endDate).toISOString(),
+            status: 0
+          });
 
-    if (isEmptyField) {
-      // Save user
-      // Save subscription if user is save!
+          if (subsRes?.data?.code !== 200) {
+            setErrorOnSave(true);
+            return;
+          }
+
+          // Save user if subscription was saved!
+          const userRes = await saveUser({
+            email: userEmail,
+            password: sha1(`${VITE_PASSWD_HASH}0a${password}`),
+            name,
+            role: 1
+          });
+
+          if (userRes?.data?.code !== 200) {
+            setErrorOnSave(true);
+            deleteSubscription(userEmail);
+            return;
+          }
+
+          setErrorOnSave(false);
+          setSaveSuccess(true);
+
+          break;
+
+        case "update":
+          const subsUpdateRes = await updateSubscription({
+            email: userEmail,
+            price,
+            start_date: new Date(startDate).toISOString(),
+            end_date: new Date(endDate).toISOString(),
+            status: 0
+          });
+
+          if (subsUpdateRes?.data?.code !== 200) {
+            setErrorOnSave(true);
+            return;
+          }
+
+          setErrorOnSave(false);
+          setUpdateSuccess(true);
+      
+        default:
+          break;
+      }
     }
   };
 
@@ -53,11 +108,25 @@ const SubscriptionForm = ({ data }) => {
     <p>Cargando formulario...</p>
   ) : (
     <div className="subs-form">
-      {isEmptyField && (
+      {!errorOnSave && isEmptyField && (
         <div className="alert alert-warning mb-4">
           Debe llenar todos los campos.
         </div>
       )}
+
+      {errorOnSave && (
+        <div className="alert alert-danger mb-4">
+          <p className="m-0">Ha ocurrido un error. Verifique que el usuario no exista antes de crearlo.</p>
+        </div>
+      )}
+
+      {!errorOnSave && (saveSuccess || updateSuccess) && (
+        <div className="alert alert-success mb-4">
+        <p className="m-0">Suscripción {updateSuccess ? "actualizada" : "guardada"} con éxito.</p>
+      </div>
+      )}
+
+
       <div className="row">
         <div className="col-12 col-md-6">
           <div className="form-group mb-3">
@@ -68,6 +137,7 @@ const SubscriptionForm = ({ data }) => {
               placeholder="Nombre"
               defaultValue={name}
               onChange={(e) => setName(e.target.value)}
+              readOnly={subscription ? true : false}
             />
           </div>
         </div>
@@ -148,7 +218,7 @@ const SubscriptionForm = ({ data }) => {
               <span>Guardar</span>
             </button>
           ) : (
-            <button className="btn btn-dark me-3" onClick={() => saveSub()}>
+            <button className="btn btn-dark me-3" onClick={() => saveSub("update")}>
               <i className="bi bi-save me-2"></i>
               <span>Actualizar</span>
             </button>
