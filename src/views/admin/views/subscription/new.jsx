@@ -15,7 +15,6 @@ const NewSubscriptionView = () => {
     } else {
       const getSubByEmail = async () => {
         const response = await getSubscription(email);
-        console.log(response)
         setSubscription(response);
       };
 
