@@ -23,7 +23,7 @@ Luego procedemos con:
   VITE_APP_VERSION = "1.0"
   VITE_API_KEY = "c37fa19f-83d7-424f-905b-0d2209871et3"
   VITE_API_URL = "http://localhost:5007/api/v1/"
-  VITE_PASSWD_HASH = "doriee83473"
+  VITE_PASSWD_HASH = "p455wdH4S5"
   VITE_COOKIE_NAME = appCookie
   ```
 
